@@ -87,8 +87,9 @@ export const requestAddComment = (title, body) => {
         // dispatch(showLoading());
         return API.addComment(title, body)
             .then(response => {
-                if (response.status === 200) {
-                    return dispatch(addComment(response.data.title, response.data.body));
+                const { result, err } = response;
+                if (!err && result && result.status === 200) {
+                    return dispatch(addComment(result.data.title, result.data.body));
                     // return dispatch(hideLoading());
                 } else {
                     // dispatch(showError());
@@ -140,17 +141,14 @@ export const getMoreLikes = () => {
         dispatch(showLoading());
         return API.likes()
             .then(response => {
-                if (response.status === 200) {
-                    dispatch(successGetMoreLikes(response.data.likes));
+                const { result, err } = response;
+                if (!err && result && result.status === 200) {
+                    dispatch(successGetMoreLikes(result.data.likes));
                     return dispatch(hideLoading());
                 } else {
                     // dispatch(showError());
                     return dispatch(hideLoading());
                 }
-            })
-            .catch(() => {
-                // dispatch(showError());
-                return dispatch(hideLoading());
             });
     };
 }
