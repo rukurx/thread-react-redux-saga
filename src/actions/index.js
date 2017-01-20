@@ -1,5 +1,3 @@
-import * as API from '../api';
-
 /****************************************
 ■ スレッド操作
 ****************************************/
@@ -83,25 +81,13 @@ export const updateComment = (id, title, body) => {
 
 // ajaxでコメントを登録する
 export const requestAddComment = (title, body) => {
-    return ( dispatch, getState ) => {
-        // dispatch(showLoading());
-        return API.addComment(title, body)
-            .then(response => {
-                const { result, err } = response;
-                if (!err && result && result.status === 200) {
-                    return dispatch(addComment(result.data.title, result.data.body));
-                    // return dispatch(hideLoading());
-                } else {
-                    // dispatch(showError());
-                    // return dispatch(hideLoading());
-                }
-            })
-            .catch(() => {
-                // dispatch(showError());
-                // return dispatch(hideLoading());
-            });
+    return {
+        type: 'REQUEST_ADD_COMMENT',
+        title,
+        body
     };
 }
+
 /****************************************
 ■ いいね操作
 ****************************************/
@@ -137,18 +123,7 @@ export const successGetMoreLikes = (likes) => {
 
 // ajaxでLikeしたユーザを取得する
 export const getMoreLikes = () => {
-    return ( dispatch, getState ) => {
-        dispatch(showLoading());
-        return API.likes()
-            .then(response => {
-                const { result, err } = response;
-                if (!err && result && result.status === 200) {
-                    dispatch(successGetMoreLikes(result.data.likes));
-                    return dispatch(hideLoading());
-                } else {
-                    // dispatch(showError());
-                    return dispatch(hideLoading());
-                }
-            });
+    return {
+        type: 'GET_MORE_LIKES'
     };
 }
